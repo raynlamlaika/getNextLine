@@ -11,28 +11,76 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
-#include <libc.h>
 
-char *get_next_line(int fd)
+static char	*append(char *string, char *result)
 {
-	static char	*string;
+	char	*p;
 
-	string =  malloc(sizeof(BFZ));
+	if (!result)
+		p = ft_strdup(string);
+	else
+	{
+		p = ft_strjoin(result, string);
+		free(result);
+	}
+	return (p);
+}
+
+static char *finishing(char *result)
+{
+	int	i;
+
+	i = 0;
+	if (!result)
+		return (NULL);
+	while (result[i] && result[i] != '\n')
+		i++;
+	if (result[i] == '\n')
+		result[++i] = '\0';
+	return (result);
+}
+
+static char *get_next_line(int fd)
+{
+	static char	*buffer;
+	char		temp[BUFFER_SIZE + 1];
+	ssize_t		bytes_read;
+	char		*line;
+	char		*newline;
+
+	line = NULL;
+	buffer = NULL;
 	while (1)
 	{
-		if (ft_strchr(*string,'\n'))
+		if (buffer && ft_strchr(buffer, '\n'))
 		{
-			return(finish(string));
+			newline = ft_strchr(buffer, '\n');
+			size_t len = newline - buffer + 1;
+			line = malloc(len + 1);
+			if (line)
+			{
+				ft_strncpy(line, buffer, len);
+				line[len] = '\0';
+			}
+			ft_memmove(buffer, buffer + len, ft_strlen(buffer) - len + 1);
+			return (line);
 		}
-		if ()
-		{
-			
-		}
-
-		
+		bytes_read = read(fd, temp, BUFFER_SIZE);
+		if (bytes_read <= 0)
+			break;
+		temp[bytes_read] = '\0';
+		buffer = append(temp, buffer);
 	}
 
+	if (buffer && *buffer)
+	{
+		line = ft_strdup(buffer);
+		free(buffer);
+		buffer = NULL;
+		return (line);
+	}
 
-
+	free(buffer);
+	buffer = NULL;
+	return (NULL);
 }
