@@ -87,5 +87,3 @@ char	*ft_strdup(const char*source)
 	sp[o] = '\0';
 	return (sp);
 }
-
-

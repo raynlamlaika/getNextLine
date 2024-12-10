@@ -40,7 +40,7 @@ static char *finishing(char *result)
 	return (result);
 }
 
-static char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		temp[BUFFER_SIZE + 1];
@@ -59,10 +59,10 @@ static char *get_next_line(int fd)
 			line = malloc(len + 1);
 			if (line)
 			{
-				ft_strncpy(line, buffer, len);
+				strncpy(line, buffer, len);
 				line[len] = '\0';
 			}
-			ft_memmove(buffer, buffer + len, ft_strlen(buffer) - len + 1);
+			memmove(buffer, buffer + len, ft_strlen(buffer) - len + 1);
 			return (line);
 		}
 		bytes_read = read(fd, temp, BUFFER_SIZE);
@@ -83,4 +83,16 @@ static char *get_next_line(int fd)
 	free(buffer);
 	buffer = NULL;
 	return (NULL);
+}
+
+
+int main()
+{
+	int i = open("example.txt",O_RDONLY);
+	printf("%s",get_next_line(i));
+	printf("%s",get_next_line(i));
+
+
+
+	return 0;
 }
