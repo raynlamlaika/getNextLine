@@ -42,47 +42,24 @@ static char *finishing(char *result)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	char		temp[BUFFER_SIZE + 1];
-	ssize_t		bytes_read;
-	char		*line;
-	char		*newline;
+	static char	*buff;
+	char		retu[BUFFER_SIZE + 1];
+	ssize_t	byts;
 
-	line = NULL;
-	buffer = NULL;
+	buff = NULL;
 	while (1)
 	{
-		if (buffer && ft_strchr(buffer, '\n'))
+		if (buff && ft_strchr(buff,'\n'))
 		{
-			newline = ft_strchr(buffer, '\n');
-			size_t len = newline - buffer + 1;
-			line = malloc(len + 1);
-			if (line)
-			{
-				strncpy(line, buffer, len);
-				line[len] = '\0';
-			}
-			memmove(buffer, buffer + len, ft_strlen(buffer) - len + 1);
-			return (line);
-		}
-		bytes_read = read(fd, temp, BUFFER_SIZE);
-		if (bytes_read <= 0)
+			printf("hada howa: %s \n",ft_strchr(buff,'\n'));
 			break;
-		temp[bytes_read] = '\0';
-		buffer = append(temp, buffer);
+		}
+		byts = read(fd, retu, BUFFER_SIZE);
+		if (byts <= 0)
+			break;
+		retu[byts] = '\0';
+		buff = append(retu,buff);
 	}
-
-	if (buffer && *buffer)
-	{
-		line = ft_strdup(buffer);
-		free(buffer);
-		buffer = NULL;
-		return (line);
-	}
-
-	free(buffer);
-	buffer = NULL;
-	return (NULL);
 }
 
 
@@ -90,8 +67,49 @@ int main()
 {
 	int i = open("example.txt",O_RDONLY);
 	printf("%s",get_next_line(i));
-	printf("%s",get_next_line(i));
+	//printf("%s",get_next_line(i));
 
+	// static char	*buffer;
+	// char		temp[BUFFER_SIZE + 1];
+	// ssize_t		bytes_read;
+	// char		*line;
+	// char		*newline;
+
+	// line = NULL;
+	// buffer = NULL;
+	// while (1)
+	// {
+	// 	if (buffer && ft_strchr(buffer, '\n'))
+	// 	{
+	// 		newline = ft_strchr(buffer, '\n');
+	// 		size_t len = newline - buffer + 1;
+	// 		line = malloc(len + 1);
+	// 		if (line)
+	// 		{
+	// 			strncpy(line, buffer, len);
+	// 			line[len] = '\0';
+	// 		}
+	// 		memmove(buffer, buffer + len, ft_strlen(buffer) - len + 1);
+	// 		return (line);
+	// 	}
+	// 	bytes_read = read(fd, temp, BUFFER_SIZE);
+	// 	if (bytes_read <= 0)
+	// 		break;
+	// 	temp[bytes_read] = '\0';
+	// 	buffer = append(temp, buffer);
+	// }
+
+	// if (buffer && *buffer)
+	// {
+	// 	line = ft_strdup(buffer);
+	// 	free(buffer);
+	// 	buffer = NULL;
+	// 	return (line);
+	// }
+
+	// free(buffer);
+	// buffer = NULL;
+	// return (NULL);
 
 
 	return 0;
