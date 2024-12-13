@@ -6,7 +6,7 @@
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:47:42 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/13 14:18:18 by rlamlaik         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:57:06 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int main()
 {
 	int i = open("example.txt",O_RDONLY); 
 	printf("%s",get_next_line(i));
+
+
 
 
 	return (0);
