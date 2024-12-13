@@ -6,111 +6,63 @@
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:47:42 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/05 02:56:42 by rlamlaik         ###   ########.fr       */
+/*   Updated: 2024/12/13 09:06:29 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*append(char *string, char *result)
+static void freed(char *point)
 {
-	char	*p;
-
-	if (!result)
-		p = ft_strdup(string);
-	else
-	{
-		p = ft_strjoin(result, string);
-		free(result);
-	}
-	return (p);
+	if (*point)
+		free(point);
+	point = NULL;
 }
 
-static char *finishing(char *result)
+static void	*finishing(char *buffer, char **line)
 {
-	int	i;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
-	if (!result)
-		return (NULL);
-	while (result[i] && result[i] != '\n')
+	j = 0;
+	while (buffer[i] != '\n' && buffer[i])
 		i++;
-	if (result[i] == '\n')
-		result[++i] = '\0';
-	return (result);
+	j = 0;
+	*line = malloc(i + 2);
+	if (!*line)
+		return (NULL);
+	while (i >= j)
+	{
+		(*line)[j] = buffer[j];
+		j++;
+	}
+	(*line)[++i] = '\n';
+	(*line)[++i] = '\0';
+	return (*line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buff;
-	char		retu[BUFFER_SIZE + 1];
-	ssize_t	byts;
+	static char	*buffer;
+	char		*line;
+	char		*tohold;
+	ssize_t		byts;
 
-	buff = NULL;
-	while (1)
+	line = NULL;
+	if (fd > 2147483647 || (read(fd, 0, 0)) < 0)
+		return (NULL);
+	tohold = malloc(BUFFER_SIZE + 1);
+	if (tohold)
+		return (freed());
+	while (!ft_strchr(tohold, '\n'))
 	{
-		if (buff && ft_strchr(buff,'\n'))
-		{
-			printf("hada howa: %s \n",ft_strchr(buff,'\n'));
-			break;
-		}
-		byts = read(fd, retu, BUFFER_SIZE);
-		if (byts <= 0)
-			break;
-		retu[byts] = '\0';
-		buff = append(retu,buff);
+		byts = read(fd, tohold, BUFFER_SIZE);
+		if (byts < 0)
+			return (NULL);
+		buffer = ft_strjoin(buffer, tohold);
 	}
-}
-
-
-int main()
-{
-	int i = open("example.txt",O_RDONLY);
-	printf("%s",get_next_line(i));
-	//printf("%s",get_next_line(i));
-
-	// static char	*buffer;
-	// char		temp[BUFFER_SIZE + 1];
-	// ssize_t		bytes_read;
-	// char		*line;
-	// char		*newline;
-
-	// line = NULL;
-	// buffer = NULL;
-	// while (1)
-	// {
-	// 	if (buffer && ft_strchr(buffer, '\n'))
-	// 	{
-	// 		newline = ft_strchr(buffer, '\n');
-	// 		size_t len = newline - buffer + 1;
-	// 		line = malloc(len + 1);
-	// 		if (line)
-	// 		{
-	// 			strncpy(line, buffer, len);
-	// 			line[len] = '\0';
-	// 		}
-	// 		memmove(buffer, buffer + len, ft_strlen(buffer) - len + 1);
-	// 		return (line);
-	// 	}
-	// 	bytes_read = read(fd, temp, BUFFER_SIZE);
-	// 	if (bytes_read <= 0)
-	// 		break;
-	// 	temp[bytes_read] = '\0';
-	// 	buffer = append(temp, buffer);
-	// }
-
-	// if (buffer && *buffer)
-	// {
-	// 	line = ft_strdup(buffer);
-	// 	free(buffer);
-	// 	buffer = NULL;
-	// 	return (line);
-	// }
-
-	// free(buffer);
-	// buffer = NULL;
-	// return (NULL);
-
-
-	return 0;
+	finishing(buffer, &line);
+	tohold = ft_strchr(tohold, '\n') + 1;
+	return (line);
 }
