@@ -6,7 +6,7 @@
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:47:42 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/13 14:57:06 by rlamlaik         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:36:18 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ char	*get_next_line(int fd)
 		if (byts <= 0)
 		{
             freed(&tohold);
-            return (freed(&buffer), NULL);
+			if (!buffer || *buffer == '\0')
+            	return (freed(&buffer), NULL);
+			break;
         }
 		tohold[byts] = '\0';
 		buffer = ft_strjoin(buffer, tohold);
@@ -76,18 +78,11 @@ char	*get_next_line(int fd)
         return (freed(&buffer), NULL);
 
     char *temp = buffer;
-	buffer = ft_strdup(ft_strchr(buffer, '\n') + 1);
-	
+	char *newline_pos = ft_strchr(buffer, '\n');
+	if (newline_pos)
+		buffer = ft_strdup(newline_pos + 1);
+	else
+		buffer = NULL;
+	freed(&temp);
     return (line);
-}
-
-int main()
-{
-	int i = open("example.txt",O_RDONLY); 
-	printf("%s",get_next_line(i));
-
-
-
-
-	return (0);
 }
