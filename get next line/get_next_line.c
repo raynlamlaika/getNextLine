@@ -6,13 +6,13 @@
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:47:42 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/13 15:36:18 by rlamlaik         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:51:17 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void freed(char **point)
+static void	freed(char **point)
 {
 	if (*point)
 	{
@@ -40,9 +40,25 @@ static void	*finishing(char *buffer, char **line)
 		j++;
 	}
 	if (buffer[i] == '\n')
-        (*line)[j++] = '\n';
+		(*line)[j++] = '\n';
 	(*line)[j] = '\0';
 	return (*line);
+}
+
+static void	rest( char **buffer)
+{
+	char	*temp;
+	char	*newline_pos;
+
+	newline_pos = ft_strchr(*buffer, '\n');
+	if (newline_pos)
+	{
+		temp = *buffer;
+		*buffer = ft_strdup(newline_pos + 1);
+		freed(&temp);
+	}
+	else
+		freed(buffer);
 }
 
 char	*get_next_line(int fd)
@@ -63,26 +79,37 @@ char	*get_next_line(int fd)
 		byts = read(fd, tohold, BUFFER_SIZE);
 		if (byts <= 0)
 		{
-            freed(&tohold);
+			freed(&tohold);
 			if (!buffer || *buffer == '\0')
-            	return (freed(&buffer), NULL);
-			break;
-        }
+				return (freed(&buffer), NULL);
+			break ;
+		}
 		tohold[byts] = '\0';
 		buffer = ft_strjoin(buffer, tohold);
 		if (!buffer)
 			return (freed(&tohold), NULL);
 	}
 	freed(&tohold);
-    if (!finishing(buffer, &line))
-        return (freed(&buffer), NULL);
-
-    char *temp = buffer;
-	char *newline_pos = ft_strchr(buffer, '\n');
-	if (newline_pos)
-		buffer = ft_strdup(newline_pos + 1);
-	else
-		buffer = NULL;
-	freed(&temp);
-    return (line);
+	if (!finishing(buffer, &line))
+		return (freed(&buffer), NULL);
+	rest(&buffer);
+	return (line);
 }
+
+// int main()
+// {
+// 	int i = open("example.txt",O_RDONLY); 
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	printf("%s",get_next_line(i));
+// 	return (0);
+// }
