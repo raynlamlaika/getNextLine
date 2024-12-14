@@ -1,6 +1,8 @@
-this is the line to read
+hadaa howa 
+dyal get_next_linenext
 
 
-tallo allo t
+get_next_line
+get 
+next
 
-hsi rvlabir vq3jrb vq3jr qvk3hrj vqhu3r qh34jn 

@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*    get_next_line_utils.c                             :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 22:51:37 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/13 14:18:34 by rlamlaik         ###   ########.fr       */
+/*   Created: 2024/12/14 12:55:22 by rlamlaik          #+#    #+#             */
+/*   Updated: 2024/12/14 12:56:02 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+
 
 char	*ft_strdup(const char*source)
 {

@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 18:47:42 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/14 15:06:15 by rlamlaik         ###   ########.fr       */
+/*   Created: 2024/12/14 12:49:37 by rlamlaik          #+#    #+#             */
+/*   Updated: 2024/12/14 15:06:29 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+
+#include "get_next_line_bonus.h"
 
 static void	freed(char **point)
 {
