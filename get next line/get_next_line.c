@@ -6,7 +6,7 @@
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:47:42 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/14 15:06:15 by rlamlaik         ###   ########.fr       */
+/*   Updated: 2024/12/15 04:20:48 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ static int	readtobuff(int fd, char **buffer)
 	{
 		byts = read(fd, tohold, BUFFER_SIZE);
 		if (byts <= 0)
-		{
-			freed(&tohold);
-			return (byts);
-		}
+			return (freed(&tohold), byts);
 		tohold[byts] = '\0';
 		temp = *buffer;
 		*buffer = ft_strjoin(*buffer, tohold);
@@ -67,7 +64,8 @@ static void	update_buffer( char **buffer)
 	else
 		freed(buffer);
 }
-static char *extract_line(char *buffer)
+
+static char	*extract_line(char *buffer)
 {
 	size_t	i;
 	char	*line;
@@ -77,7 +75,7 @@ static char *extract_line(char *buffer)
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	line = malloc(i + 2); // Include space for '\n' and '\0'
+	line = malloc(i + 2);
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -104,7 +102,7 @@ char	*get_next_line(int fd)
 	if (retu <= 0)
 	{
 		if (!buffer || *buffer == '\0')
-			return (freed(&buffer), NULL); // Clean up on EOF or error
+			return (freed(&buffer), NULL);
 	}
 	line = extract_line(buffer);
 	update_buffer(&buffer);

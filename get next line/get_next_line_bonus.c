@@ -6,10 +6,9 @@
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:49:37 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/14 15:06:29 by rlamlaik         ###   ########.fr       */
+/*   Updated: 2024/12/15 04:22:52 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "get_next_line_bonus.h"
 
@@ -35,10 +34,7 @@ static int	readtobuff(int fd, char **buffer)
 	{
 		byts = read(fd, tohold, BUFFER_SIZE);
 		if (byts <= 0)
-		{
-			freed(&tohold);
-			return (byts);
-		}
+			return (freed(&tohold), byts);
 		tohold[byts] = '\0';
 		temp = *buffer;
 		*buffer = ft_strjoin(*buffer, tohold);
@@ -53,7 +49,7 @@ static int	readtobuff(int fd, char **buffer)
 	return (1);
 }
 
-static void	update_buffer( char **buffer)
+static void	update_buffer(char **buffer)
 {
 	char	*temp;
 	char	*newline_pos;
@@ -68,7 +64,8 @@ static void	update_buffer( char **buffer)
 	else
 		freed(buffer);
 }
-static char *extract_line(char *buffer)
+
+static char	*extract_line(char *buffer)
 {
 	size_t	i;
 	char	*line;
@@ -78,7 +75,7 @@ static char *extract_line(char *buffer)
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	line = malloc(i + 2); // Include space for '\n' and '\0'
+	line = malloc(i + 2);
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -95,19 +92,19 @@ static char *extract_line(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[OPEN_MAX];
 	char		*line;
 	ssize_t		retu;
 
 	if (BUFFER_SIZE <= 0 || (read(fd, 0, 0)) < 0 || fd < 0)
-		return (freed(&buffer), NULL);
-	retu = readtobuff(fd, &buffer);
+		return (freed(&buffer[fd]), NULL);
+	retu = readtobuff(fd, &buffer[fd]);
 	if (retu <= 0)
 	{
-		if (!buffer || *buffer == '\0')
-			return (freed(&buffer), NULL); // Clean up on EOF or error
+		if (!buffer[fd] || *buffer[fd] == '\0')
+			return (freed(&buffer[fd]), NULL);
 	}
-	line = extract_line(buffer);
-	update_buffer(&buffer);
+	line = extract_line(buffer[fd]);
+	update_buffer(&buffer[fd]);
 	return (line);
 }

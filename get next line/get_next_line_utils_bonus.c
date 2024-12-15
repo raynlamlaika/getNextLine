@@ -6,12 +6,11 @@
 /*   By: rlamlaik <rlamlaik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:55:22 by rlamlaik          #+#    #+#             */
-/*   Updated: 2024/12/14 12:56:02 by rlamlaik         ###   ########.fr       */
+/*   Updated: 2024/12/15 04:23:17 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-
 
 char	*ft_strdup(const char*source)
 {
