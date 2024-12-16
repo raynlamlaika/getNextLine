@@ -1,8 +1,0 @@
-hadaa howa 
-dyal get_next_linenext
-
-
-get_next_line
-get 
-next
-
